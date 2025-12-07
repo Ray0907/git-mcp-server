@@ -1,0 +1,68 @@
+{
+	"name": "git-mcp-server",
+	"version": "0.1.0",
+	"description": "MCP server for GitLab and GitHub",
+	"homepage": "https://github.com/Ray0907/git-mcp-server",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/Ray0907/git-mcp-server.git"
+	},
+	"bugs": {
+		"url": "https://github.com/Ray0907/git-mcp-server/issues"
+	},
+	"type": "module",
+	"main": "./dist/index.js",
+	"types": "./dist/index.d.ts",
+	"bin": {
+		"git-mcp-server": "./dist/index.js"
+	},
+	"exports": {
+		".": {
+			"types": "./dist/index.d.ts",
+			"import": "./dist/index.js"
+		},
+		"./tools": {
+			"types": "./dist/tools/index.d.ts",
+			"import": "./dist/tools/index.js"
+		},
+		"./providers": {
+			"types": "./dist/providers/index.d.ts",
+			"import": "./dist/providers/index.js"
+		}
+	},
+	"files": [
+		"dist"
+	],
+	"scripts": {
+		"build": "tsc",
+		"dev": "tsc --watch",
+		"start": "node dist/index.js",
+		"test": "node --test",
+		"lint": "eslint src --ext .ts",
+		"prepublishOnly": "npm run build"
+	},
+	"keywords": [
+		"mcp",
+		"model-context-protocol",
+		"gitlab",
+		"github",
+		"git",
+		"ai",
+		"llm"
+	],
+	"author": "Ray Tien <ray.tien0907@gmail.com>",
+	"license": "MIT",
+	"engines": {
+		"node": ">=18"
+	},
+	"dependencies": {
+		"@modelcontextprotocol/sdk": "^1.10.0",
+		"open": "^10.1.0",
+		"zod": "^3.24.2",
+		"zod-to-json-schema": "^3.24.5"
+	},
+	"devDependencies": {
+		"@types/node": "^22.13.10",
+		"typescript": "^5.8.2"
+	}
+}
