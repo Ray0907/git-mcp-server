@@ -18,7 +18,7 @@ Add to your `claude_desktop_config.json`:
   "mcpServers": {
     "git": {
       "command": "npx",
-      "args": ["-y", "git-mcp-server"],
+      "args": ["-y", "@raytien/git-mcp-server"],
       "env": {
         "GIT_TOKEN": "glpat-xxxxxxxxxxxxxxxxxxxx"
       }
@@ -34,7 +34,7 @@ Add to your `claude_desktop_config.json`:
   "mcpServers": {
     "git": {
       "command": "npx",
-      "args": ["-y", "git-mcp-server"],
+      "args": ["-y", "@raytien/git-mcp-server"],
       "env": {
         "GIT_API_URL": "https://gitlab.your-company.com/api/v4",
         "GIT_TOKEN": "glpat-xxxxxxxxxxxxxxxxxxxx"
@@ -51,7 +51,7 @@ Add to your `claude_desktop_config.json`:
   "mcpServers": {
     "git": {
       "command": "npx",
-      "args": ["-y", "git-mcp-server"],
+      "args": ["-y", "@raytien/git-mcp-server"],
       "env": {
         "GIT_TOKEN": "glpat-xxxxxxxxxxxxxxxxxxxx",
         "GIT_READ_ONLY": "true"

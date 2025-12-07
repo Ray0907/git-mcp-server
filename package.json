@@ -1,6 +1,6 @@
 {
-	"name": "git-mcp-server",
-	"version": "0.1.0",
+	"name": "@raytien/git-mcp-server",
+	"version": "0.1.2",
 	"description": "MCP server for GitLab and GitHub",
 	"homepage": "https://github.com/Ray0907/git-mcp-server",
 	"repository": {
@@ -31,7 +31,8 @@
 		}
 	},
 	"files": [
-		"dist"
+		"dist",
+		"README.md"
 	],
 	"scripts": {
 		"build": "tsc",
