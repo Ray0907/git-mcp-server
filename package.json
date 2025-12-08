@@ -1,6 +1,6 @@
 {
 	"name": "@raytien/git-mcp-server",
-	"version": "0.2.2",
+	"version": "0.2.3",
 	"mcpName": "io.github.Ray0907/git-mcp-server",
 	"description": "MCP server for GitLab and GitHub",
 	"homepage": "https://github.com/Ray0907/git-mcp-server",
