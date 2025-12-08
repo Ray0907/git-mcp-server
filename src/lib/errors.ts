@@ -26,17 +26,18 @@ export class AppError extends Error {
 }
 
 // ============================================================================
-// GitLab API Errors
+// Git API Errors (GitLab / GitHub)
 // ============================================================================
 
-export class GitLabError extends AppError {
+export class GitApiError extends AppError {
 	constructor(
+		public readonly provider: 'gitlab' | 'github',
 		public readonly status: number,
 		message: string,
 		details?: unknown
 	) {
-		super(statusToCode(status), message, details);
-		this.name = 'GitLabError';
+		super(gitStatusToCode(provider, status), message, details);
+		this.name = 'GitApiError';
 	}
 
 	get retryable(): boolean {
@@ -44,25 +45,41 @@ export class GitLabError extends AppError {
 	}
 }
 
-function statusToCode(status: number): string {
+/** @deprecated Use GitApiError instead */
+export class GitLabError extends GitApiError {
+	constructor(status: number, message: string, details?: unknown) {
+		super('gitlab', status, message, details);
+		this.name = 'GitLabError';
+	}
+}
+
+export class GitHubError extends GitApiError {
+	constructor(status: number, message: string, details?: unknown) {
+		super('github', status, message, details);
+		this.name = 'GitHubError';
+	}
+}
+
+function gitStatusToCode(provider: 'gitlab' | 'github', status: number): string {
+	const prefix = provider.toUpperCase();
 	switch (status) {
 		case 400:
-			return 'GITLAB_BAD_REQUEST';
+			return `${prefix}_BAD_REQUEST`;
 		case 401:
-			return 'GITLAB_UNAUTHORIZED';
+			return `${prefix}_UNAUTHORIZED`;
 		case 403:
-			return 'GITLAB_FORBIDDEN';
+			return `${prefix}_FORBIDDEN`;
 		case 404:
-			return 'GITLAB_NOT_FOUND';
+			return `${prefix}_NOT_FOUND`;
 		case 409:
-			return 'GITLAB_CONFLICT';
+			return `${prefix}_CONFLICT`;
 		case 422:
-			return 'GITLAB_VALIDATION_ERROR';
+			return `${prefix}_VALIDATION_ERROR`;
 		case 429:
-			return 'GITLAB_RATE_LIMITED';
+			return `${prefix}_RATE_LIMITED`;
 		default:
-			if (status >= 500) return 'GITLAB_SERVER_ERROR';
-			return 'GITLAB_ERROR';
+			if (status >= 500) return `${prefix}_SERVER_ERROR`;
+			return `${prefix}_ERROR`;
 	}
 }
 

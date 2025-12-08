@@ -12,6 +12,8 @@ import type { Logger } from '../lib/logger.js';
 
 import { GitLabClient } from '../gitlab/client.js';
 import { createGitLabProvider } from './gitlab/index.js';
+import { GitHubClient } from '../github/client.js';
+import { createGitHubProvider } from './github/index.js';
 
 // ============================================================================
 // Factory Types
@@ -47,11 +49,12 @@ export function createProvider(options: ProviderFactoryOptions): GitProvider {
 		}
 
 		case 'github': {
-			// TODO: Implement GitHub provider
-			throw new Error(
-				'GitHub provider not yet implemented. ' +
-				'Contributions welcome at https://github.com/anthropics/git-mcp-server'
-			);
+			const client = new GitHubClient({
+				base_url: config.api_url || 'https://api.github.com',
+				auth,
+				logger,
+			});
+			return createGitHubProvider(client, config.api_url);
 		}
 
 		default: {

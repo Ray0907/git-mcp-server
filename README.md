@@ -1,6 +1,6 @@
 # Git MCP Server
 
-A clean, modular Git MCP server supporting GitLab (and GitHub in the future).
+A clean, modular Git MCP server supporting both GitHub and GitLab.
 
 ## Quick Start
 
@@ -11,6 +11,41 @@ Add to your `claude_desktop_config.json`:
 **macOS**: `~/Library/Application Support/Claude/claude_desktop_config.json`
 **Windows**: `%APPDATA%\Claude\claude_desktop_config.json`
 
+#### GitHub
+
+```json
+{
+  "mcpServers": {
+    "git": {
+      "command": "npx",
+      "args": ["-y", "@raytien/git-mcp-server"],
+      "env": {
+        "GIT_PROVIDER": "github",
+        "GIT_TOKEN": "ghp_xxxxxxxxxxxxxxxxxxxx"
+      }
+    }
+  }
+}
+```
+
+#### GitHub Enterprise
+
+```json
+{
+  "mcpServers": {
+    "git": {
+      "command": "npx",
+      "args": ["-y", "@raytien/git-mcp-server"],
+      "env": {
+        "GIT_PROVIDER": "github",
+        "GIT_API_URL": "https://github.your-company.com/api/v3",
+        "GIT_TOKEN": "ghp_xxxxxxxxxxxxxxxxxxxx"
+      }
+    }
+  }
+}
+```
+
 #### GitLab.com (SaaS)
 
 ```json
@@ -20,6 +55,7 @@ Add to your `claude_desktop_config.json`:
       "command": "npx",
       "args": ["-y", "@raytien/git-mcp-server"],
       "env": {
+        "GIT_PROVIDER": "gitlab",
         "GIT_TOKEN": "glpat-xxxxxxxxxxxxxxxxxxxx"
       }
     }
@@ -36,6 +72,7 @@ Add to your `claude_desktop_config.json`:
       "command": "npx",
       "args": ["-y", "@raytien/git-mcp-server"],
       "env": {
+        "GIT_PROVIDER": "gitlab",
         "GIT_API_URL": "https://gitlab.your-company.com/api/v4",
         "GIT_TOKEN": "glpat-xxxxxxxxxxxxxxxxxxxx"
       }
@@ -53,7 +90,8 @@ Add to your `claude_desktop_config.json`:
       "command": "npx",
       "args": ["-y", "@raytien/git-mcp-server"],
       "env": {
-        "GIT_TOKEN": "glpat-xxxxxxxxxxxxxxxxxxxx",
+        "GIT_PROVIDER": "github",
+        "GIT_TOKEN": "ghp_xxxxxxxxxxxxxxxxxxxx",
         "GIT_READ_ONLY": "true"
       }
     }
@@ -61,8 +99,14 @@ Add to your `claude_desktop_config.json`:
 }
 ```
 
-### Get Your GitLab Token
+### Get Your Token
 
+#### GitHub
+1. Go to GitHub > Settings > Developer settings > Personal access tokens > Tokens (classic)
+2. Generate new token with scopes: `repo`, `read:org`, `workflow`
+3. Copy the token (starts with `ghp_`)
+
+#### GitLab
 1. Go to GitLab > Settings > Access Tokens
 2. Create a new token with scopes: `api`, `read_api`, `read_repository`, `write_repository`
 3. Copy the token (starts with `glpat-`)
@@ -100,14 +144,16 @@ Add to your `claude_desktop_config.json`:
 | `get_pull_request_diffs` | Get merge request changes |
 | `merge_pull_request`     | Merge a merge request     |
 
-### CI/CD Pipelines
+### CI/CD (Pipelines / Workflow Runs)
 
-| Tool                 | Description         |
-| -------------------- | ------------------- |
-| `get_pipeline`       | Get pipeline status |
-| `list_pipelines`     | List pipelines      |
-| `list_pipeline_jobs` | List pipeline jobs  |
-| `get_job_log`        | Get job log output  |
+| Tool                 | Description                                    |
+| -------------------- | ---------------------------------------------- |
+| `get_pipeline`       | Get pipeline/workflow run status               |
+| `list_pipelines`     | List pipelines/workflow runs                   |
+| `list_pipeline_jobs` | List pipeline jobs/workflow jobs               |
+| `get_job_log`        | Get job log output                             |
+
+> Note: GitHub Actions workflow runs map to GitLab pipelines. The same tools work for both platforms.
 
 ### Comments
 
@@ -145,19 +191,23 @@ src/
 │   ├── types.ts          # Platform-agnostic types
 │   ├── config.ts         # Provider configuration
 │   ├── factory.ts        # Provider Factory (creates GitLab/GitHub)
-│   └── gitlab/           # GitLab implementation
+│   ├── gitlab/           # GitLab implementation
+│   └── github/           # GitHub implementation
 ├── tools/                # Tool definitions
 │   ├── define.ts         # defineTool helper
 │   ├── registry.ts       # Tool registry
 │   ├── repository/       # Repository tools
 │   ├── issues/           # Issue tools
-│   ├── merge-requests/   # MR tools
+│   ├── merge-requests/   # PR/MR tools
 │   ├── pipelines/        # CI/CD tools
 │   ├── notes/            # Comment tools
 │   └── users/            # User tools
 ├── gitlab/               # GitLab API client
 │   ├── client.ts         # HTTP client
 │   └── types.ts          # GitLab API types
+├── github/               # GitHub API client
+│   ├── client.ts         # HTTP client
+│   └── types.ts          # GitHub API types
 ├── auth/                 # Authentication
 └── lib/                  # Utilities
 ```
@@ -170,6 +220,9 @@ npm install
 
 # Build
 npm run build
+
+# Run tests
+npm test
 
 # Run locally
 npm start
