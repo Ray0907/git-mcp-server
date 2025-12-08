@@ -1,0 +1,50 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-10-17/server.schema.json",
+  "name": "io.github.Ray0907/git-mcp-server",
+  "description": "MCP server for GitLab and GitHub",
+  "repository": {
+    "url": "https://github.com/Ray0907/git-mcp-server",
+    "source": "github"
+  },
+  "version": "0.2.2",
+  "packages": [
+    {
+      "registryType": "npm",
+      "identifier": "@raytien/git-mcp-server",
+      "version": "0.2.2",
+      "transport": {
+        "type": "stdio"
+      },
+      "environmentVariables": [
+        {
+          "name": "GIT_PROVIDER",
+          "description": "Provider type: gitlab or github",
+          "isRequired": false,
+          "format": "string",
+          "isSecret": false
+        },
+        {
+          "name": "GIT_TOKEN",
+          "description": "Personal Access Token for GitHub or GitLab",
+          "isRequired": true,
+          "format": "string",
+          "isSecret": true
+        },
+        {
+          "name": "GIT_API_URL",
+          "description": "API URL for self-hosted instances",
+          "isRequired": false,
+          "format": "string",
+          "isSecret": false
+        },
+        {
+          "name": "GIT_READ_ONLY",
+          "description": "Disable write operations (true/false)",
+          "isRequired": false,
+          "format": "string",
+          "isSecret": false
+        }
+      ]
+    }
+  ]
+}
