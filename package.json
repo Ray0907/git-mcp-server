@@ -1,6 +1,7 @@
 {
 	"name": "@raytien/git-mcp-server",
-	"version": "0.1.2",
+	"version": "0.2.1",
+	"mcpName": "io.github.ray0907/git-mcp-server",
 	"description": "MCP server for GitLab and GitHub",
 	"homepage": "https://github.com/Ray0907/git-mcp-server",
 	"repository": {
@@ -53,6 +54,9 @@
 	],
 	"author": "Ray Tien <ray.tien0907@gmail.com>",
 	"license": "MIT",
+	"publishConfig": {
+		"access": "public"
+	},
 	"engines": {
 		"node": ">=18"
 	},
