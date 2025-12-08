@@ -33,36 +33,36 @@ export function createAuth(config: AuthConfig): AuthProvider {
  */
 export function createAuthFromEnv(): AuthProvider {
 	// Check OAuth first
-	if (process.env.GITLAB_USE_OAUTH === 'true') {
-		const client_id = process.env.GITLAB_OAUTH_CLIENT_ID;
+	if (process.env.GIT_USE_OAUTH === 'true') {
+		const client_id = process.env.GIT_OAUTH_CLIENT_ID;
 		if (!client_id) {
-			throw new Error('GITLAB_OAUTH_CLIENT_ID is required when GITLAB_USE_OAUTH=true');
+			throw new Error('GIT_OAUTH_CLIENT_ID is required when GIT_USE_OAUTH=true');
 		}
 		return createOAuth({
 			type: 'oauth',
 			client_id,
-			gitlab_url: (process.env.GITLAB_API_URL ?? 'https://gitlab.com/api/v4').replace('/api/v4', ''),
-			token_path: process.env.GITLAB_OAUTH_TOKEN_PATH,
+			gitlab_url: (process.env.GIT_API_URL ?? 'https://gitlab.com/api/v4').replace('/api/v4', ''),
+			token_path: process.env.GIT_OAUTH_TOKEN_PATH,
 		});
 	}
 
 	// Check Cookie
-	if (process.env.GITLAB_AUTH_COOKIE_PATH) {
+	if (process.env.GIT_AUTH_COOKIE_PATH) {
 		return createCookieAuth({
 			type: 'cookie',
-			cookie_path: process.env.GITLAB_AUTH_COOKIE_PATH,
+			cookie_path: process.env.GIT_AUTH_COOKIE_PATH,
 		});
 	}
 
 	// Default to PAT
-	const token = process.env.GITLAB_TOKEN ?? process.env.GITLAB_PERSONAL_ACCESS_TOKEN;
+	const token = process.env.GIT_TOKEN;
 	if (!token) {
-		throw new Error('No auth configured. Set GITLAB_TOKEN, GITLAB_USE_OAUTH=true, or GITLAB_AUTH_COOKIE_PATH');
+		throw new Error('No auth configured. Set GIT_TOKEN, GIT_USE_OAUTH=true, or GIT_AUTH_COOKIE_PATH');
 	}
 
 	return createPatAuth({
 		type: 'pat',
 		token,
-		use_private_token: process.env.GITLAB_AUTH_TYPE === 'private-token',
+		use_private_token: process.env.GIT_AUTH_TYPE === 'private-token',
 	});
 }
